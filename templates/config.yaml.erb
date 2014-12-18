@@ -72,6 +72,12 @@ logs:
 
 # you can specify proxy used with all requests in wget-like manner here
 # (or set up ENV variables with the same name)
+<% if @http_proxy %>
+http_proxy: <%= @http_proxy %>
+<% end %>
+<% if @https_proxy %>
+https_proxy: <%= @https_proxy %>
+<% end %>
 #http_proxy: http://something.local/
 #https_proxy: https://something.local/
 #no_proxy: localhost,127.0.0.1
