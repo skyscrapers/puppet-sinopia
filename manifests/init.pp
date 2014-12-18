@@ -27,6 +27,10 @@ class sinopia (
   $conf_port                 = '4783',
   $conf_admin_pw_hash,
   $conf_user_pw_combinations = undef,
+  $http_proxy                = '',
+  $https_proxy               = '',
+  $conf_template             = 'sinopia/config.yaml.erb',
+  $service_template          = 'sinopia/service.erb',
   $conf_max_body_size        = '1mb',
   $conf_max_age_in_sec       = '86400',
   $install_as_service        = true,) {
@@ -80,7 +84,7 @@ class sinopia (
     ensure  => present,
     owner   => $deamon_user,
     group   => $deamon_user,
-    content => template('sinopia/config.yaml.erb'),
+    content => template($conf_template),
     require => File[$install_path],
     notify  => $service_notify,
   }
@@ -96,7 +100,7 @@ class sinopia (
     $init_file = '/etc/init.d/sinopia'
 
     file { $init_file:
-      content => template('sinopia/service.erb'),
+      content => template($service_template),
       mode    => '0755',
       notify  => $service_notify,
     }
