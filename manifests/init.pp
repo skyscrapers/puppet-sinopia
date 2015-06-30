@@ -69,6 +69,7 @@ class sinopia (
     ensure  => present,
     require => [File[$install_path,$modules_path],User[$deamon_user]],
     notify  => $service_notify,
+    target  => "{$install_path}",
     user    => $deamon_user,
   }
 
