@@ -22,6 +22,7 @@
 class sinopia (
   $install_root              = '/opt',
   $install_dir               = 'sinopia',
+  $version                   = undef,    # latest
   $deamon_user               = 'sinopia',
   $conf_listen_to_address    = '0.0.0.0',
   $conf_port                 = '4783',
@@ -70,6 +71,7 @@ class sinopia (
     true => Service['sinopia']
   }
   nodejs::npm { "${install_path}:sinopia":
+    version      => $version,
     ensure       => present,
     require      => [File[$install_path,$modules_path],User[$deamon_user]],
     notify       => $service_notify,
