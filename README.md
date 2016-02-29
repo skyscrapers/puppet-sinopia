@@ -58,7 +58,7 @@ The default values for all so far configurable parameters are:
   class { '::sinopia':
     install_root       	      => '/opt',
     install_dir        	      => 'sinopia',
-    deamon_user        	      => 'sinopia',
+    daemon_user        	      => 'sinopia',
     conf_listen_to_address    => '0.0.0.0',
     conf_port          	      => '4783',
     conf_admin_pw_hash
@@ -87,13 +87,13 @@ Here is an example for an Apply-mode installation in Debian Wheezy:
 2. Download/clone all required modules into a modules directory:
 ```bash  
   mkdir -p /opt/pp-sinopia/modules ; cd /opt/pp-sinopia/modules
-  
+
   git clone https://github.com/puppetlabs/puppetlabs-stdlib.git stdlib
   git clone https://github.com/puppetlabs/puppetlabs-apt.git apt
   # for RHEL/Fedora/CentOS you will probably need yumrepo instead of apt
-  
+
   git clone https://github.com/saheba/puppet-nodejs.git nodejs
-  
+
   git clone https://github.com/saheba/puppet-sinopia.git sinopia
 ```
 
