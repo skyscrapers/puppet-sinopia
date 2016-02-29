@@ -38,15 +38,15 @@ class sinopia (
   require nodejs
   $install_path = "${install_root}/${install_dir}"
 
-  group { $deamon_user:
+  group { $daemon_user:
     ensure => present,
   }
 
-  user { $deamon_user:
+  user { $daemon_user:
     ensure     => present,
-    gid        => $deamon_user,
+    gid        => $daemon_user,
     managehome => true,
-    require    => Group[$deamon_user]
+    require    => Group[$daemon_user]
   }
 
   file { $install_root:
@@ -55,9 +55,9 @@ class sinopia (
 
   file { $install_path:
     ensure  => directory,
-    owner   => $deamon_user,
-    group   => $deamon_user,
-    require => [User[$deamon_user], Group[$deamon_user]]
+    owner   => $daemon_user,
+    group   => $daemon_user,
+    require => [User[$daemon_user], Group[$daemon_user]]
   }
 
   ### ensures, that always the latest versions of npm modules are installed ###
@@ -73,9 +73,9 @@ class sinopia (
   nodejs::npm { "${install_path}:sinopia":
     version      => $version,
     ensure       => present,
-    require      => [File[$install_path,$modules_path],User[$deamon_user]],
+    require      => [File[$install_path,$modules_path],User[$daemon_user]],
     notify       => $service_notify,
-    exec_as_user => $deamon_user,
+    exec_as_user => $daemon_user,
   }
 
   ###
@@ -90,10 +90,10 @@ class sinopia (
     notify  => $service_notify,
   }
 
-  file { "${install_path}/deamon.log":
+  file { "${install_path}/daemon.log":
     ensure  => present,
-    owner   => $deamon_user,
-    group   => $deamon_user,
+    owner   => $daemon_user,
+    group   => $daemon_user,
     require => File[$install_path],
   }
 
@@ -114,7 +114,7 @@ class sinopia (
       require   => File[
         $init_file,
         "${install_path}/config.yaml",
-        "${install_path}/deamon.log"
+        "${install_path}/daemon.log"
       ]
     }
   }
