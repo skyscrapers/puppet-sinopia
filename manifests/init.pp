@@ -49,9 +49,10 @@ class sinopia (
     require    => Group[$deamon_user]
   }
 
-  file { $install_root:
-    ensure => directory,
-  }
+  #file { $install_root:
+#    ensure => directory,
+#  }
+  ensure_resource('file', $install_root, {'ensure' => 'directory'})
 
   file { $install_path:
     ensure  => directory,
