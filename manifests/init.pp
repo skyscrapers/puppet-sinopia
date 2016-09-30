@@ -22,11 +22,16 @@
 class sinopia (
   $install_root              = '/opt',
   $install_dir               = 'sinopia',
+  $version                   = undef,    # latest
   $deamon_user               = 'sinopia',
   $conf_listen_to_address    = '0.0.0.0',
   $conf_port                 = '4783',
   $conf_admin_pw_hash,
   $conf_user_pw_combinations = undef,
+  $http_proxy                = '',
+  $https_proxy               = '',
+  $conf_template             = 'sinopia/config.yaml.erb',
+  $service_template          = 'sinopia/service.erb',
   $conf_max_body_size        = '1mb',
   $conf_max_age_in_sec       = '86400',
   $install_as_service        = true,) {
@@ -66,6 +71,7 @@ class sinopia (
     true => Service['sinopia']
   }
   nodejs::npm { "${install_path}:sinopia":
+    version      => $version,
     ensure       => present,
     require      => [File[$install_path,$modules_path],User[$deamon_user]],
     notify       => $service_notify,
@@ -79,7 +85,7 @@ class sinopia (
     ensure  => present,
     owner   => $deamon_user,
     group   => $deamon_user,
-    content => template('sinopia/config.yaml.erb'),
+    content => template($conf_template),
     require => File[$install_path],
     notify  => $service_notify,
   }
@@ -95,7 +101,7 @@ class sinopia (
     $init_file = '/etc/init.d/sinopia'
 
     file { $init_file:
-      content => template('sinopia/service.erb'),
+      content => template($service_template),
       mode    => '0755',
       notify  => $service_notify,
     }
