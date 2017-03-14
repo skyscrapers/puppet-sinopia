@@ -36,7 +36,7 @@ class sinopia (
   $conf_max_age_in_sec       = '86400',
   $install_as_service        = true,) {
   require nodejs
-  $install_path = "${install_root}}/${install_dir}"
+  $install_path = "${install_root}/${install_dir}"
 
   group { $daemon_user:
     ensure => present,
