@@ -23,7 +23,7 @@ class sinopia (
   $install_root              = '/opt',
   $install_dir               = 'sinopia',
   $version                   = undef,    # latest
-  $deamon_user               = 'sinopia',
+  $daemon_user               = 'sinopia',
   $conf_listen_to_address    = '0.0.0.0',
   $conf_port                 = '4783',
   $conf_admin_pw_hash,
@@ -83,8 +83,8 @@ class sinopia (
   ###
   file { "${install_path}/config.yaml":
     ensure  => present,
-    owner   => $deamon_user,
-    group   => $deamon_user,
+    owner   => $daemon_user,
+    group   => $daemon_user,
     content => template($conf_template),
     require => File[$install_path],
     notify  => $service_notify,

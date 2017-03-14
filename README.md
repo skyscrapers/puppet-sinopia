@@ -40,7 +40,7 @@ You can also override several configuration parameters.
     install_dir        	    => 'sinopiaxy',
     conf_admin_pw_hash 	    => 'your-pw-hash',
     conf_port          	    => '8080',
-    deamon_user        	    => 'sinopiaxy',
+    daemon_user        	    => 'sinopiaxy',
     conf_listen_to_address  => '127.0.0.1',
     http_proxy              => 'http://proxy.com:3128',
     https_proxy             => 'http://proxy.com:3128',
