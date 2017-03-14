@@ -69,11 +69,12 @@ class sinopia (
     true => Service['sinopia']
   }
   nodejs::npm { $install_path:
-    ensure  => present,
-    require => [File[$install_path,$modules_path],User[$daemon_user]],
-    notify  => $service_notify,
-    target  => $install_path,
-    user    => $daemon_user,
+    ensure   => present,
+    require  => [File[$install_path,$modules_path],User[$daemon_user]],
+    notify   => $service_notify,
+    target   => $install_path,
+    user     => $daemon_user,
+    home_dir => "/home/${daemon_user}"
   }
 
   ###
