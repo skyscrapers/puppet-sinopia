@@ -71,11 +71,11 @@ class sinopia (
     true => Service['sinopia']
   }
   nodejs::npm { "${install_path}:sinopia":
-    version      => $version,
-    ensure       => present,
-    require      => [File[$install_path,$modules_path],User[$daemon_user]],
-    notify       => $service_notify,
-    exec_as_user => $daemon_user,
+    ensure  => present,
+    require => [File[$install_path,$modules_path],User[$deamon_user]],
+    notify  => $service_notify,
+    target  => "{$install_path}",
+    user    => $deamon_user,
   }
 
   ###
