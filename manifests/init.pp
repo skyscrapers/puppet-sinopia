@@ -23,7 +23,7 @@ class sinopia (
   $install_root              = '/opt',
   $install_dir               = 'sinopia',
   $version                   = undef,    # latest
-  $deamon_user               = 'sinopia',
+  $daemon_user               = 'sinopia',
   $conf_listen_to_address    = '0.0.0.0',
   $conf_port                 = '4783',
   $conf_admin_pw_hash,
@@ -38,15 +38,15 @@ class sinopia (
   require nodejs
   $install_path = "${install_root}/${install_dir}"
 
-  group { $deamon_user:
+  group { $daemon_user:
     ensure => present,
   }
 
-  user { $deamon_user:
+  user { $daemon_user:
     ensure     => present,
-    gid        => $deamon_user,
+    gid        => $daemon_user,
     managehome => true,
-    require    => Group[$deamon_user]
+    require    => Group[$daemon_user]
   }
 
   file { $install_root:
@@ -55,9 +55,9 @@ class sinopia (
 
   file { $install_path:
     ensure  => directory,
-    owner   => $deamon_user,
-    group   => $deamon_user,
-    require => [User[$deamon_user], Group[$deamon_user]]
+    owner   => $daemon_user,
+    group   => $daemon_user,
+    require => [User[$daemon_user], Group[$daemon_user]]
   }
 
   ### ensures, that always the latest versions of npm modules are installed ###
@@ -83,17 +83,17 @@ class sinopia (
   ###
   file { "${install_path}/config.yaml":
     ensure  => present,
-    owner   => $deamon_user,
-    group   => $deamon_user,
+    owner   => $daemon_user,
+    group   => $daemon_user,
     content => template($conf_template),
     require => File[$install_path],
     notify  => $service_notify,
   }
 
-  file { "${install_path}/deamon.log":
+  file { "${install_path}/daemon.log":
     ensure  => present,
-    owner   => $deamon_user,
-    group   => $deamon_user,
+    owner   => $daemon_user,
+    group   => $daemon_user,
     require => File[$install_path],
   }
 
@@ -114,7 +114,7 @@ class sinopia (
       require   => File[
         $init_file,
         "${install_path}/config.yaml",
-        "${install_path}/deamon.log"
+        "${install_path}/daemon.log"
       ]
     }
   }
