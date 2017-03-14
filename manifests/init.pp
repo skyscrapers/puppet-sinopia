@@ -97,7 +97,7 @@ class sinopia (
   }
 
   if $install_as_service {
-    $init_file = '/etc/init.d/sinopia'
+    $init_file = '/etc/systemd/system/sinopia.service'
 
     file { $init_file:
       content => template($service_template),
