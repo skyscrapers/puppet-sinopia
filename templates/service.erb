@@ -3,7 +3,7 @@ Description=Sinopia NPM Proxy/Cache Server
 After=syslog.target network.target
 [Service]
 Type=simple
-User=$deamon_user
+User=<%= @deamon_user %>
 ExecStart=<%= @install_path %>/node_modules/sinopia/bin/sinopia
 Restart=always
 RestartSec=30
