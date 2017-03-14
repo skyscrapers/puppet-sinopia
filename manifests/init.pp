@@ -68,7 +68,7 @@ class sinopia (
     default => undef,
     true => Service['sinopia']
   }
-  nodejs::npm { "${install_path}:sinopia":
+  nodejs::npm { $install_path:
     ensure  => present,
     require => [File[$install_path,$modules_path],User[$daemon_user]],
     notify  => $service_notify,
