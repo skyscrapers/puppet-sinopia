@@ -20,13 +20,13 @@
 # Sample Usage:
 #
 class sinopia (
+  $conf_admin_pw_hash,
   $install_root              = '/opt',
   $install_dir               = 'sinopia',
   $version                   = undef,    # latest
   $daemon_user               = 'sinopia',
   $conf_listen_to_address    = '0.0.0.0',
   $conf_port                 = '4783',
-  $conf_admin_pw_hash,
   $conf_user_pw_combinations = undef,
   $http_proxy                = '',
   $https_proxy               = '',
@@ -34,7 +34,8 @@ class sinopia (
   $service_template          = 'sinopia/service.erb',
   $conf_max_body_size        = '1mb',
   $conf_max_age_in_sec       = '86400',
-  $install_as_service        = true,) {
+  $install_as_service        = true,
+) {
   require nodejs
   $install_path = "${install_root}/${install_dir}"
 
@@ -43,10 +44,10 @@ class sinopia (
   }
 
   user { $daemon_user:
-    ensure     => present,
-    gid        => $daemon_user,
-    managehome => true,
-    require    => Group[$daemon_user]
+    ensure  => present,
+    gid     => $daemon_user,
+    home    => $install_path,
+    require => Group[$daemon_user],
   }
 
   ensure_resource('file', $install_root, {'ensure' => 'directory' })
@@ -66,15 +67,15 @@ class sinopia (
 
   $service_notify = $install_as_service ? {
     default => undef,
-    true => Service['sinopia']
+    true    => Service['sinopia']
   }
   nodejs::npm { $install_path:
     ensure   => present,
-    require  => [File[$install_path,$modules_path],User[$daemon_user]],
     notify   => $service_notify,
     target   => $install_path,
     user     => $daemon_user,
-    home_dir => "/home/${daemon_user}"
+    home_dir => $install_path,
+    require  => [File[$install_path,$modules_path],User[$daemon_user]],
   }
 
   ###
@@ -87,13 +88,6 @@ class sinopia (
     content => template($conf_template),
     require => File[$install_path],
     notify  => $service_notify,
-  }
-
-  file { "${install_path}/daemon.log":
-    ensure  => present,
-    owner   => $daemon_user,
-    group   => $daemon_user,
-    require => File[$install_path],
   }
 
   if $install_as_service {
@@ -112,8 +106,7 @@ class sinopia (
       restart   => true,
       require   => File[
         $init_file,
-        "${install_path}/config.yaml",
-        "${install_path}/daemon.log"
+        "${install_path}/config.yaml"
       ]
     }
   }

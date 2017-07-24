@@ -1,5 +1,5 @@
 # path to a directory with all packages
-storage: ./storage
+storage: <%= @install_path %>/storage
 
 # a list of users
 users:
@@ -86,4 +86,3 @@ https_proxy: <%= @https_proxy %>
 # increase it if you have "request entity too large" errors
 #max_body_size: 1mb
 max_body_size: <%=@conf_max_body_size %>
-    
